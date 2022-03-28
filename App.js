@@ -5,6 +5,12 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function App() {
+  const[name,setName] = useState(null);
+  const[surname,setSurname] = useState(null);
+  const[birthday,setBirthday] = useState(null);
+  const[city,setCity] = useState(null);
+  const[side,setSide] = useState(null);
+
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -35,6 +41,7 @@ export default function App() {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
+    setBirthday(currentDate)
   };
 
   const showMode = (currentMode) => {
@@ -45,6 +52,14 @@ export default function App() {
   const showDatepicker = () => {
     showMode('date');
   }; 
+
+  const validateInput = () => {
+    if(name.length > 0 && surname.length > 0 && birthday.length > 0 && city.length > 0 && genderValue && vaccineValue && side.length > 0 && symptompsValue){
+      return true
+    }
+
+    return true
+  }
   
   return (
   <SafeAreaView style={styles.droidSafeArea}>
@@ -54,13 +69,16 @@ export default function App() {
         <Text style={styles.header}>Name</Text>
         <TextInput
         style={styles.inputField}
+        onChangeText={(text)=> setName(text)}
         />
+        
       </View>
       
       <View>
         <Text style={styles.header}>Surname</Text>
         <TextInput
         style={styles.inputField}
+        onChangeText={(text)=> setSurname(text)}
         />
       </View>
       
@@ -83,6 +101,7 @@ export default function App() {
         <Text style={styles.header}>City</Text>
         <TextInput
         style={styles.inputField}
+        onChangeText={(text)=> setCity(text)}
         />
       </View>
 
@@ -98,9 +117,6 @@ export default function App() {
           setOpen={setGenderOpen}
           setValue={setGenderValue}
           setItems={setGenderItems}
-          dropDownContainerStyle={{
-            backgroundColor:"red",
-          }}
           listMode="SCROLLVIEW"
           scrollViewProps={{
             nestedScrollEnabled: true,
@@ -133,14 +149,15 @@ export default function App() {
         <TextInput
         style={styles.textField}
         multiline={true}
+        onChangeText={(text)=> setSide(text)}
         />
       </View>
 
       <View style={{
           zIndex:999,
-          height:openSymptomps?180:100
+          height:openSymptomps?180:110
       }}>
-        <Text style={styles.header}>Any</Text>  
+        <Text style={styles.header}>Any PCR positive cases and Covid-19 symptoms after 3rd vaccination</Text>  
         <DropDownPicker
           open={openSymptomps}
           value={symptompsValue}
@@ -155,7 +172,7 @@ export default function App() {
           dropDownDirection="BOTTOM"
         />
       </View>
-      <Button title='Send'></Button>
+      <Button title='Send' disabled={!name || !surname || !birthday || !city || !genderValue || !vaccineValue || !side || !symptompsValue}></Button>
       </ScrollView>
   </SafeAreaView>
   );
