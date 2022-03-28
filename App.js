@@ -85,7 +85,7 @@ export default function App() {
       
       <View>
         <Text style={styles.header}>Birthday</Text>
-        <Text style={{color:"red",marginBottom:10}}>{date.toLocaleString()}</Text>
+        {birthday && (<Text style={{color:"red",marginBottom:10}}>{birthday.getDate() + '-' + parseInt(birthday.getMonth() + 1) + '-' + birthday.getFullYear()}</Text>)}
         <Button onPress={showDatepicker} title="Choose" />
         {show && (
         <DateTimePicker
