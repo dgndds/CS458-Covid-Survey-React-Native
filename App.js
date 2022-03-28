@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function App() {
+  const[isInputValid,setIsInputValid] = useState(false)
   const[name,setName] = useState(null);
   const[surname,setSurname] = useState(null);
   const[birthday,setBirthday] = useState(null);
@@ -140,7 +141,6 @@ export default function App() {
           scrollViewProps={{
             nestedScrollEnabled: true,
           }}
-          onOpen={() => setShowDropDown((prevState) => !prevState)}  
         />
       </View>
     
@@ -172,7 +172,7 @@ export default function App() {
           dropDownDirection="BOTTOM"
         />
       </View>
-      <Button title='Send' disabled={!name || !surname || !birthday || !city || !genderValue || !vaccineValue || !side || !symptompsValue}></Button>
+      { (name && surname && birthday && city && genderValue && vaccineValue && side && symptompsValue) && <Button title='Send'></Button>}
       </ScrollView>
   </SafeAreaView>
   );
