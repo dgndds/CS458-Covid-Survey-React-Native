@@ -6,6 +6,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function App() {
   const[isInputValid,setIsInputValid] = useState(false)
+  const[submitMessage,setSubmitMessage] = useState("")
+
   const[name,setName] = useState(null);
   const[surname,setSurname] = useState(null);
   const[birthday,setBirthday] = useState(null);
@@ -54,12 +56,8 @@ export default function App() {
     showMode('date');
   }; 
 
-  const validateInput = () => {
-    if(name.length > 0 && surname.length > 0 && birthday.length > 0 && city.length > 0 && genderValue && vaccineValue && side.length > 0 && symptompsValue){
-      return true
-    }
-
-    return true
+  const submit = () => {
+    (name && surname && birthday && city && genderValue && vaccineValue && side && symptompsValue)?setSubmitMessage("Submitted!"):setSubmitMessage("Please fill the form correctly!")
   }
   
   return (
@@ -69,6 +67,7 @@ export default function App() {
       <View>
         <Text style={styles.header}>Name</Text>
         <TextInput
+        id="nameInput"
         style={styles.inputField}
         onChangeText={(text)=> setName(text)}
         />
@@ -78,6 +77,7 @@ export default function App() {
       <View>
         <Text style={styles.header}>Surname</Text>
         <TextInput
+        id="surnameInput"
         style={styles.inputField}
         onChangeText={(text)=> setSurname(text)}
         />
@@ -90,6 +90,7 @@ export default function App() {
         {show && (
         <DateTimePicker
           testID="dateTimePicker"
+          id="birthdayInput"
           value={date}
           mode={mode}
           is24Hour={true}
@@ -102,6 +103,7 @@ export default function App() {
         <Text style={styles.header}>City</Text>
         <TextInput
         style={styles.inputField}
+        id="cityInput"
         onChangeText={(text)=> setCity(text)}
         />
       </View>
@@ -115,6 +117,7 @@ export default function App() {
           open={openGender}
           value={genderValue}
           items={genderItems}
+          id="genderInput"
           setOpen={setGenderOpen}
           setValue={setGenderValue}
           setItems={setGenderItems}
@@ -134,6 +137,7 @@ export default function App() {
           open={openVaccine}
           value={vaccineValue}
           items={vaccineItems}
+          id="vaccineInput"
           setOpen={setVaccineOpen}
           setValue={setVaccineValue}
           setItems={setVaccineItems}
@@ -148,6 +152,7 @@ export default function App() {
         <Text style={styles.header}>Side Effects After Vaccination</Text>
         <TextInput
         style={styles.textField}
+        id="sideInput"
         multiline={true}
         onChangeText={(text)=> setSide(text)}
         />
@@ -166,13 +171,16 @@ export default function App() {
           setValue={setSymptompsValue}
           setItems={setSymptompsItems}
           listMode="SCROLLVIEW"
+          id="caseInput"
           scrollViewProps={{
             nestedScrollEnabled: true,
           }}
           dropDownDirection="BOTTOM"
         />
       </View>
-      { (name && surname && birthday && city && genderValue && vaccineValue && side && symptompsValue) && <Button title='Send'></Button>}
+      {(name && surname && birthday && city && genderValue && vaccineValue && side && symptompsValue) ? <Button title='Send' id="sendButton" onPress={submit}></Button>:null}
+      
+      <Text id="successMessage">{submitMessage}</Text>
       </ScrollView>
   </SafeAreaView>
   );
@@ -205,7 +213,7 @@ const styles = StyleSheet.create({
     color:"blue"
   },
   header:{
-    color:"red",
+    color:"black",
     fontSize:15,
     marginBottom:5,
     marginTop:5
